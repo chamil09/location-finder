@@ -2,24 +2,17 @@ const LocationController = require("../../controllers/location.controllers");
 const LocationModel = require("../../model/location.model");
 const httpMocks = require("node-mocks-http");
 const newLocation = require("../mock-data/new-location.json");
+const allLocations = require("../mock-data/all-locations.json");
 
-LocationModel.create = jest.fn(); //to check if the method is called
+//LocationModel.create = jest.fn(); //to check if the method is called
+
+jest.mock("../../model/location.model");
 
 let req, res, next;
 beforeEach(() => {
     req = httpMocks.createRequest();
     res = httpMocks.createResponse();
     next = jest.fn();
-});
-
-describe("LocationController.getLocation", () => {
-    it("should have a getLocation function", () => {
-        expect(typeof LocationController.getLocation).toBe("function");
-    });
-    it("Should call LocationModel.find({})", async () => {
-       //await LocationController.getLocation(req, res, next);
-       // expect(LocationController.find).toHaveBeenCalledWith({});
-    });
 });
 describe("LocationController.addLocation", () => {
 
@@ -51,4 +44,29 @@ describe("LocationController.addLocation", () => {
         expect(res.statusCode).toBe(500);
         expect(res._isEndCalled()).toBeTruthy();
     })
-}); 
+});
+
+describe("LocationController.getLocations", () => {
+    it("should have a getLocations function", () => {
+        expect(typeof LocationController.getLocations).toBe("function");
+    });
+    it("Should call LocationModel.find({})", async () => {
+       await LocationController.getLocations(req, res);
+       //expect(LocationController.find).toHaveBeenCalledWith({});
+    });
+    it("Should return response with status 200 and all locations", async () => {
+        LocationModel.find.mockReturnValue(allLocations);
+        await LocationController.getLocations(req,res);
+        expect(res.statusCode).toBe(200);
+        expect(res._isEndCalled()).toBeTruthy();
+        expect(res._getJSONData()).toStrictEqual(allLocations);
+    });
+    it("Should handle errors in getLocations", async () => {
+        const errorMessage = { message: 'Error retrieving locations'};
+        const rejectedPromise = Promise.reject(errorMessage);
+        LocationModel.find.mockReturnValue(rejectedPromise);
+        await LocationController.getLocations(req,res);
+        expect(res.statusCode).toBe(500);
+        expect(res._isEndCalled()).toBeTruthy();
+    });
+});

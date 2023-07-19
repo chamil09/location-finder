@@ -10,7 +10,7 @@ exports.addLocation = async (req, res) => {
     }
   };
   
-  exports.getLocation = async (req, res) => {
+  exports.getLocations = async (req, res) => {
     try {
       const allLocations = await LocationModel.find({});
       res.status(200).json(allLocations);

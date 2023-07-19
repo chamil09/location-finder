@@ -1,0 +1,24 @@
+[
+    {
+        "name": "Sigiriya",
+        "lat": 7.957,
+        "lon": 80.7603,
+        "description": "it's palace ruins on top of a massive 200 meter high rock surrounded by the remains of an extensive network of gardens, reservoirs and other structures.",
+        "entranceFee": 30,
+        "currency": "LKR",
+        "image": "https://as1.ftcdn.net/v2/jpg/01/59/74/72/1000_F_159747281_eB0QZHoRt7kRr8id3uJpb6BJIg3weEx8.jpg",
+        "_id": "64b67d29e6ba0ffda89428fc",
+        "__v": 0
+    },
+    {
+        "name": "Sigiriya",
+        "lat": 7.957,
+        "lon": 80.7603,
+        "description": "it's palace ruins on top of a massive 200 meter high rock surrounded by the remains of an extensive network of gardens, reservoirs and other structures.",
+        "entranceFee": 30,
+        "currency": "LKR",
+        "image": "https://as1.ftcdn.net/v2/jpg/01/59/74/72/1000_F_159747281_eB0QZHoRt7kRr8id3uJpb6BJIg3weEx8.jpg",
+        "_id": "64b67d29e6ba0ffda89428fc",
+        "__v": 0
+    }
+]
