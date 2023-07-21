@@ -1,14 +1,13 @@
 const mongoose = require('mongoose');
+require('dotenv').config();
 
-async function connect(){
+async function connectDB(){
     try {
-        await mongoose.connect(
-            "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.8.0"
-        ).then(() => {console.log("Connected to MongoDB");})
+        await mongoose.connect(process.env.DB_URL).then(() => {console.log("Connected to MongoDB");})
     } catch (err) {
         console.error("Error connecting to mongodb");
         console.error(err)
     }
 }
 
-module.exports = { connect };
+module.exports = { connectDB };

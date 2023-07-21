@@ -1,8 +1,10 @@
 const axios = require('axios');
 const redis = require('redis');
+require('dotenv').config();
 
-const apiKey = '349d291ba59eb3ee9e1e5cad4684c583';
+const apiKey = process.env.OPEN_WEATHER_KEY;
 const exclude = 'hourly,daily,minutely';
+
 
 const client = redis.createClient();
 
@@ -16,7 +18,7 @@ exports.getWeather = async (req, res) => {
     if (value){
       return res.status(200).json(JSON.parse(value));
     } 
-    const response = await axios.get('https://api.openweathermap.org/data/3.0/onecall', {
+    const response = await axios.get(process.env.OPEN_WEATHER_URL, {
       params: {
         lat,
         lon,

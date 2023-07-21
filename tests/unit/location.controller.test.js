@@ -9,6 +9,7 @@ const allLocations = require("../mock-data/all-locations.json");
 jest.mock("../../model/location.model");
 
 let req, res, next;
+const locationId = "64b13eb35eff801fd21659b6";
 beforeEach(() => {
     req = httpMocks.createRequest();
     res = httpMocks.createResponse();
@@ -37,7 +38,7 @@ describe("LocationController.addLocation", () => {
         expect((res._getJSONData())).toStrictEqual(newLocation);
     });
     it("Should handle errors", async () => {
-        const errorMessage = { message: 'Error retrieving locations'};
+        const errorMessage = { message: 'Error adding location'};
         const rejectedPromise = Promise.reject(errorMessage);
         LocationModel.create.mockReturnValue(rejectedPromise);
         await LocationController.addLocation(req, res);
@@ -52,7 +53,7 @@ describe("LocationController.getLocations", () => {
     });
     it("Should call LocationModel.find({})", async () => {
        await LocationController.getLocations(req, res);
-       //expect(LocationController.find).toHaveBeenCalledWith({});
+       expect(LocationModel.find).toHaveBeenCalledWith({});
     });
     it("Should return response with status 200 and all locations", async () => {
         LocationModel.find.mockReturnValue(allLocations);
@@ -70,3 +71,109 @@ describe("LocationController.getLocations", () => {
         expect(res._isEndCalled()).toBeTruthy();
     });
 });
+
+describe("LocationController.getLoationById", () => {
+    it("Should have a getLoationById", () => {
+        expect(typeof LocationController.getLocationById).toBe("function");
+    });
+    it("Should call LocationModel.findById with route parameters", async () => {
+        req.params.locationId = locationId;
+        await LocationController.getLocationById(req,res);
+        expect(LocationModel.findById).toBeCalledWith(locationId);
+    });
+    it("Should return response with status 200 and json body", async () => {
+        LocationModel.findById.mockReturnValue(newLocation);
+        await LocationController.getLocationById(req,res);
+        expect(res.statusCode).toBe(200);
+        expect(res._getJSONData()).toStrictEqual(newLocation);
+        expect(res._isEndCalled()).toBeTruthy();
+        
+    });
+    it("Should handle errors in getLocationById", async () => {
+        const errorMessage = { message: 'Error retrieving location'};
+        const rejectedPromise = Promise.reject(errorMessage);
+        LocationModel.findById.mockReturnValue(rejectedPromise);
+        await LocationController.getLocationById(req, res);
+        expect(res.statusCode).toBe(500);
+        expect(res._isEndCalled()).toBeTruthy();
+    });
+    it("Should return 404 when item doesn't exist", async () => {
+        LocationModel.findById.mockReturnValue(null);
+        await LocationController.getLocationById(req, res);
+        expect(res.statusCode).toBe(404);
+        expect(res._isEndCalled).toBeTruthy();
+    });
+});
+
+describe("LocationController.updateLocation", () => {
+    it("Should have an updateLocation function", () => {
+        expect(typeof LocationController.updateLocation).toBe("function");
+    });
+    it("Should update with LocationModel.findByIdAndUpdate", async () => {
+        req.params.locationId = locationId;
+        req.body = newLocation;
+        await LocationController.updateLocation(req, res);
+        expect(LocationModel.findByIdAndUpdate).toHaveBeenCalledWith(locationId, newLocation, {
+            new: true,
+            useFindAndModify: false
+        });
+    });
+    it("Should return response with status 200 and json body", async () => {
+        req.params.locationId = locationId;
+        req.body = newLocation;
+        LocationModel.findByIdAndUpdate.mockReturnValue(newLocation);
+        await LocationController.updateLocation(req, res);
+        expect(res._isEndCalled()).toBeTruthy();
+        expect(res.statusCode).toBe(200);
+        expect(res._getJSONData()).toStrictEqual(newLocation);
+    });
+    it("Should handle errors in getLocationById", async () => {
+        const errorMessage = { message: 'Error updating location'};
+        const rejectedPromise = Promise.reject(errorMessage);
+        LocationModel.findByIdAndUpdate.mockReturnValue(rejectedPromise);
+        await LocationController.updateLocation(req, res);
+        expect(res.statusCode).toBe(500);
+        expect(res._isEndCalled()).toBeTruthy();
+    });
+    it("Should return 404 when item doesn't exist", async () => {
+        LocationModel.findByIdAndUpdate.mockReturnValue(null);
+        await LocationController.updateLocation(req, res);
+        expect(res.statusCode).toBe(404);
+        expect(res._isEndCalled).toBeTruthy();
+    });
+});
+
+describe("LocationController.deleteLocation", () => {
+    it("Should have an deleteLocation function", () => {
+        expect(typeof LocationController.deleteLocation).toBe("function");
+    });
+    it("Should delete with LocationModel.findByIdAndDelete", async () => {
+        req.params.locationId = locationId;
+        req.body = newLocation;
+        await LocationController.deleteLocation(req, res);
+        expect(LocationModel.findByIdAndDelete).toBeCalledWith(locationId);
+    });
+    it("Should return response with status 200 and json body", async () => {
+        req.params.locationId = locationId;
+        req.body = newLocation;
+        LocationModel.findByIdAndDelete.mockReturnValue(newLocation);
+        await LocationController.deleteLocation(req, res);
+        expect(res._isEndCalled()).toBeTruthy();
+        expect(res.statusCode).toBe(200);
+        expect(res._getJSONData()).toStrictEqual(newLocation);
+    });
+    it("Should handle errors in deleteLocation", async () => {
+        const errorMessage = { message: 'Error deleting location'};
+        const rejectedPromise = Promise.reject(errorMessage);
+        LocationModel.findByIdAndDelete.mockReturnValue(rejectedPromise);
+        await LocationController.deleteLocation(req, res);
+        expect(res.statusCode).toBe(500);
+        expect(res._isEndCalled()).toBeTruthy();
+    });
+    it("Should return 404 when item doesn't exist", async () => {
+        LocationModel.findByIdAndDelete.mockReturnValue(null);
+        await LocationController.deleteLocation(req, res);
+        expect(res.statusCode).toBe(404);
+        expect(res._isEndCalled).toBeTruthy();
+    });
+})

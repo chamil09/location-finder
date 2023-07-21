@@ -3,7 +3,7 @@ const routes = require("./routes/routes");
 const app = express();
 const mongodb = require("./mongodb/mongodb.connect");
 
-mongodb.connect();
+mongodb.connectDB();
 
 //middleware
 app.use(express.json());
