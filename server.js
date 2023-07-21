@@ -1,5 +1,7 @@
 const app = require("./app");
-const port = 3000;
+const constants = require("./utils/constants")
+
+const port = constants.PORT;
 
 app.listen(port, () => {
   console.log(`location-finder listening on port ${port}`)

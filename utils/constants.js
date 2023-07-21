@@ -5,7 +5,10 @@ const OPEN_WEATHER = {
 
 const DB_URL = process.env.DB_URL;
 
+const PORT = process.env.PORT;
+
 module.exports = {
     OPEN_WEATHER,
-    DB_URL
+    DB_URL,
+    PORT
 };

@@ -36,8 +36,7 @@ describe("LocationController.addLocation", () => {
         expect((res._getJSONData())).toStrictEqual(newLocation);
     });
     it("Should handle errors", async () => {
-        const errorMessage = { message: 'Error adding location' };
-        const rejectedPromise = Promise.reject(errorMessage);
+        const rejectedPromise = Promise.reject();
         LocationModel.create.mockReturnValue(rejectedPromise);
         await LocationController.addLocation(req, res);
         expect(res.statusCode).toBe(500);
@@ -62,8 +61,7 @@ describe("LocationController.getLocations", () => {
         expect(res._getJSONData()).toStrictEqual(allLocations);
     });
     it("Should handle errors in getLocations", async () => {
-        const errorMessage = { message: 'Error retrieving locations' };
-        const rejectedPromise = Promise.reject(errorMessage);
+        const rejectedPromise = Promise.reject();
         LocationModel.find.mockReturnValue(rejectedPromise);
         await LocationController.getLocations(req, res);
         expect(res.statusCode).toBe(500);
@@ -89,8 +87,7 @@ describe("LocationController.getLoationById", () => {
 
     });
     it("Should handle errors in getLocationById", async () => {
-        const errorMessage = { message: 'Error retrieving location' };
-        const rejectedPromise = Promise.reject(errorMessage);
+        const rejectedPromise = Promise.reject();
         LocationModel.findById.mockReturnValue(rejectedPromise);
         await LocationController.getLocationById(req, res);
         expect(res.statusCode).toBe(500);
@@ -127,8 +124,7 @@ describe("LocationController.updateLocation", () => {
         expect(res._getJSONData()).toStrictEqual(newLocation);
     });
     it("Should handle errors in getLocationById", async () => {
-        const errorMessage = { message: 'Error updating location' };
-        const rejectedPromise = Promise.reject(errorMessage);
+        const rejectedPromise = Promise.reject();
         LocationModel.findByIdAndUpdate.mockReturnValue(rejectedPromise);
         await LocationController.updateLocation(req, res);
         expect(res.statusCode).toBe(500);
@@ -162,8 +158,7 @@ describe("LocationController.deleteLocation", () => {
         expect(res._getJSONData()).toStrictEqual(newLocation);
     });
     it("Should handle errors in deleteLocation", async () => {
-        const errorMessage = { message: 'Error deleting location' };
-        const rejectedPromise = Promise.reject(errorMessage);
+        const rejectedPromise = Promise.reject();
         LocationModel.findByIdAndDelete.mockReturnValue(rejectedPromise);
         await LocationController.deleteLocation(req, res);
         expect(res.statusCode).toBe(500);
