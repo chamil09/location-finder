@@ -1,8 +1,9 @@
 const axios = require('axios');
 const redis = require('redis');
 require('dotenv').config();
+const constants = require('../utils/constants');
 
-const apiKey = process.env.OPEN_WEATHER_KEY;
+const apiKey = constants.OPEN_WEATHER.KEY;
 const exclude = 'hourly,daily,minutely';
 
 
@@ -18,7 +19,7 @@ exports.getWeather = async (req, res) => {
     if (value){
       return res.status(200).json(JSON.parse(value));
     } 
-    const response = await axios.get(process.env.OPEN_WEATHER_URL, {
+    const response = await axios.get(constants.OPEN_WEATHER.URL, {
       params: {
         lat,
         lon,
