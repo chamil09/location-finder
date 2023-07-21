@@ -4,8 +4,6 @@ const httpMocks = require("node-mocks-http");
 const newLocation = require("../mock-data/new-location.json");
 const allLocations = require("../mock-data/all-locations.json");
 
-//LocationModel.create = jest.fn(); //to check if the method is called
-
 jest.mock("../../model/location.model");
 
 let req, res, next;
@@ -17,7 +15,7 @@ beforeEach(() => {
 });
 describe("LocationController.addLocation", () => {
 
-    beforeEach(()=>{
+    beforeEach(() => {
         req.body = newLocation;
     })
     it("should have an addLocation function", () => {
@@ -38,13 +36,14 @@ describe("LocationController.addLocation", () => {
         expect((res._getJSONData())).toStrictEqual(newLocation);
     });
     it("Should handle errors", async () => {
-        const errorMessage = { message: 'Error adding location'};
+        const errorMessage = { message: 'Error adding location' };
         const rejectedPromise = Promise.reject(errorMessage);
         LocationModel.create.mockReturnValue(rejectedPromise);
         await LocationController.addLocation(req, res);
         expect(res.statusCode).toBe(500);
         expect(res._isEndCalled()).toBeTruthy();
-    })
+    });
+    
 });
 
 describe("LocationController.getLocations", () => {
@@ -52,21 +51,21 @@ describe("LocationController.getLocations", () => {
         expect(typeof LocationController.getLocations).toBe("function");
     });
     it("Should call LocationModel.find({})", async () => {
-       await LocationController.getLocations(req, res);
-       expect(LocationModel.find).toHaveBeenCalledWith({});
+        await LocationController.getLocations(req, res);
+        expect(LocationModel.find).toHaveBeenCalledWith({});
     });
     it("Should return response with status 200 and all locations", async () => {
         LocationModel.find.mockReturnValue(allLocations);
-        await LocationController.getLocations(req,res);
+        await LocationController.getLocations(req, res);
         expect(res.statusCode).toBe(200);
         expect(res._isEndCalled()).toBeTruthy();
         expect(res._getJSONData()).toStrictEqual(allLocations);
     });
     it("Should handle errors in getLocations", async () => {
-        const errorMessage = { message: 'Error retrieving locations'};
+        const errorMessage = { message: 'Error retrieving locations' };
         const rejectedPromise = Promise.reject(errorMessage);
         LocationModel.find.mockReturnValue(rejectedPromise);
-        await LocationController.getLocations(req,res);
+        await LocationController.getLocations(req, res);
         expect(res.statusCode).toBe(500);
         expect(res._isEndCalled()).toBeTruthy();
     });
@@ -78,19 +77,19 @@ describe("LocationController.getLoationById", () => {
     });
     it("Should call LocationModel.findById with route parameters", async () => {
         req.params.locationId = locationId;
-        await LocationController.getLocationById(req,res);
+        await LocationController.getLocationById(req, res);
         expect(LocationModel.findById).toBeCalledWith(locationId);
     });
     it("Should return response with status 200 and json body", async () => {
         LocationModel.findById.mockReturnValue(newLocation);
-        await LocationController.getLocationById(req,res);
+        await LocationController.getLocationById(req, res);
         expect(res.statusCode).toBe(200);
         expect(res._getJSONData()).toStrictEqual(newLocation);
         expect(res._isEndCalled()).toBeTruthy();
-        
+
     });
     it("Should handle errors in getLocationById", async () => {
-        const errorMessage = { message: 'Error retrieving location'};
+        const errorMessage = { message: 'Error retrieving location' };
         const rejectedPromise = Promise.reject(errorMessage);
         LocationModel.findById.mockReturnValue(rejectedPromise);
         await LocationController.getLocationById(req, res);
@@ -128,7 +127,7 @@ describe("LocationController.updateLocation", () => {
         expect(res._getJSONData()).toStrictEqual(newLocation);
     });
     it("Should handle errors in getLocationById", async () => {
-        const errorMessage = { message: 'Error updating location'};
+        const errorMessage = { message: 'Error updating location' };
         const rejectedPromise = Promise.reject(errorMessage);
         LocationModel.findByIdAndUpdate.mockReturnValue(rejectedPromise);
         await LocationController.updateLocation(req, res);
@@ -163,7 +162,7 @@ describe("LocationController.deleteLocation", () => {
         expect(res._getJSONData()).toStrictEqual(newLocation);
     });
     it("Should handle errors in deleteLocation", async () => {
-        const errorMessage = { message: 'Error deleting location'};
+        const errorMessage = { message: 'Error deleting location' };
         const rejectedPromise = Promise.reject(errorMessage);
         LocationModel.findByIdAndDelete.mockReturnValue(rejectedPromise);
         await LocationController.deleteLocation(req, res);

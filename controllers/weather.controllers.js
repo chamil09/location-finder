@@ -16,9 +16,9 @@ exports.getWeather = async (req, res) => {
     const lon = req.body.lon;
     const cacheKey = lat + '_' + lon;
     const value = await client.get(cacheKey);
-    if (value){
+    if (value) {
       return res.status(200).json(JSON.parse(value));
-    } 
+    }
     const response = await axios.get(constants.OPEN_WEATHER.URL, {
       params: {
         lat,

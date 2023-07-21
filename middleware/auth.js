@@ -9,7 +9,7 @@ exports.authenticateUser = async (req, res, next) => {
             next();
         } else {
             res.status(404).json({ message: 'Authentication failed' });
-        } 
+        }
     } catch (err) {
         res.status(500).json({ message: 'Internal Server Error' });
     }

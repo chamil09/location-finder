@@ -1,11 +1,13 @@
 const LocationModel = require("../model/location.model");
+const { getWeather } = require("../services/weather.service");
+const { logger } = require('../utils/logger');
 
 exports.addLocation = async (req, res) => {
   try {
     const addedLocation = await LocationModel.create(req.body);
     res.status(201).json(addedLocation);
   } catch (error) {
-    //console.error(error);
+    logger.error(error);
     res.status(500).json({ message: 'Error adding location' });
   }
 };
@@ -15,10 +17,25 @@ exports.getLocations = async (req, res) => {
     const allLocations = await LocationModel.find({});
     res.status(200).json(allLocations);
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     res.status(500).json({ message: 'Error retrieving locations' });
   }
 };
+
+exports.getCurrentWeather = async (req, res) => {
+  try {
+    const currentLocation = await LocationModel.findById(req.params.locationId);
+    const locationData = {
+      id: req.params.locationId,
+      lat: currentLocation.lat,
+      lon: currentLocation.lon
+    }
+    await getWeather(locationData, res);
+  } catch (error) {
+    logger.error(error);
+    res.status(500).json({ message: 'Location not found' });
+  }
+}
 
 exports.getLocationById = async (req, res) => {
   try {
@@ -29,7 +46,7 @@ exports.getLocationById = async (req, res) => {
       res.status(404).json({ message: 'Location not found' });
     }
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     res.status(500).json({ message: 'Error retrieving location' });
   }
 };
@@ -50,7 +67,7 @@ exports.updateLocation = async (req, res) => {
       res.status(404).json({ message: 'Location not found' });
     }
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     res.status(500).json({ message: 'Error updating location' });
   }
 };
@@ -65,7 +82,7 @@ exports.deleteLocation = async (req, res) => {
       res.status(404).json({ message: 'Location not found' });
     }
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     res.status(500).json({ message: 'Error deleting location' });
   }
 };
