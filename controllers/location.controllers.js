@@ -11,7 +11,10 @@ exports.addLocation = async (req, res) => {
     }
     res.status(201).json(response);
   } catch (error) {
-    res.status(400).json({ message: 'Error adding location' });
+    res.status(400).json({ 
+      status : 400,
+      message: 'Error adding location' 
+    });
   }
 };
 
@@ -25,7 +28,10 @@ exports.getLocations = async (req, res) => {
     }
     res.status(200).json(response);
   } catch (error) {
-    res.status(400).json({ message: 'Error retrieving locations' });
+    res.status(400).json({ 
+      status : 400,
+      message: 'Error retrieving locations' 
+    });
   }
 };
 
@@ -45,7 +51,10 @@ exports.getCurrentWeather = async (req, res) => {
     }
     res.status(200).json(finalResponse);
   } catch (error) {
-    res.status(400).json({ message: 'Location not found' });
+    res.status(400).json({ 
+      status : 400,
+      message: 'Location not found' 
+    });
   }
 }
 
@@ -67,10 +76,15 @@ exports.getLocationById = async (req, res) => {
       }
       res.status(200).json(response);
     } else {
-      res.status(404).json({ message: 'Location not found' });
+      res.status(404).json({ 
+        status : 404,
+        message: 'Location not found' });
     }
   } catch (error) {
-    res.status(400).json({ message: 'Error retrieving location' });
+    res.status(400).json({ 
+      status : 400,
+      message: 'Error retrieving location' 
+    });
   }
 };
 
@@ -92,10 +106,15 @@ exports.updateLocation = async (req, res) => {
       }
       res.status(200).json(response);
     } else {
-      res.status(404).json({ message: 'Location not found' });
+      res.status(404).json({ 
+        status : 404,
+        message: 'Location not found' });
     }
   } catch (error) {
-    res.status(400).json({ message: 'Error updating location' });
+    res.status(400).json({ 
+      status : 400,
+      message: 'Error updating location' 
+    });
   }
 };
 
@@ -106,15 +125,19 @@ exports.deleteLocation = async (req, res) => {
     if (deleteLoc) {
       const response = {
         status : 200,
-        message: "Location successfully deleted",
-        data: deleteLoc
+        message: "Location successfully deleted"
       }
       res.status(200).json(response);
     } else {
-      res.status(404).json({ message: 'Location not found' });
+      res.status(404).json({ 
+        status : 404,
+        message: 'Location not found' });
     }
   } catch (error) {
-    res.status(400).json({ message: 'Error deleting location' });
+    res.status(400).json({ 
+      status : 400,
+      message: 'Error deleting location' 
+    });
   }
 };
 
