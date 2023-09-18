@@ -1,4 +1,3 @@
-const axios = require('axios');
 const redis = require('redis');
 require('dotenv').config();
 const constants = require('../utils/constants');
@@ -6,7 +5,6 @@ const { getWeatherData } = require('../services/externalApi.service');
 
 const apiKey = constants.OPEN_WEATHER.KEY;
 const exclude = 'hourly,daily,minutely';
-
 
 const client = redis.createClient();
 

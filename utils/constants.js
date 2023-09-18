@@ -1,5 +1,5 @@
 const OPEN_WEATHER = {
-    URL: process.env.OPEN_WEATHER_URL,
+    BASE_URL: process.env.OPEN_WEATHER_BASE_URL,
     KEY: process.env.OPEN_WEATHER_KEY
 };
 

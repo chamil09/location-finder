@@ -1,12 +1,10 @@
-const axios = require('axios');
 const redis = require('redis');
 require('dotenv').config();
 const constants = require('../utils/constants');
-const { getWeatherData } = require('../services/externalApi.service')
+const apiInstance = require('../axios/axiosInstance');
 
 const apiKey = constants.OPEN_WEATHER.KEY;
 const exclude = 'hourly,daily,minutely';
-
 
 const client = redis.createClient();
 
@@ -22,7 +20,14 @@ exports.getWeather = async (req, res) => {
       const valueRes = JSON.parse(value);
       return valueRes;
     }
-    const response = await getWeatherData(lat, lon, exclude, apiKey);
+    const response = await apiInstance.get('/3.0/onecall',{
+      params: {
+        lat,
+        lon,
+        exclude,
+        appid: apiKey,
+      }
+    })
     const weatherData = {
       temp: (response.data.current.temp - 273.15).toFixed(2),
       humidity: response.data.current.humidity,
